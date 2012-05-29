@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 21 April 2012 [latest update: #1289] on 24 May 2012 at 10:21:15 pm'!
+'From Cuis 4.0 of 21 April 2012 [latest update: #1291] on 29 May 2012 at 3:41:37 pm'!
 'Description Please enter a description for this package '!
 !classDefinition: #WebAuthRequired category: #'Cuis-WebClient'!
 Exception subclass: #WebAuthRequired
@@ -199,8 +199,8 @@ next	"Answer the next decompressed object in the Stream represented by the	rec
 !WebChunkedStream methodsFor: 'accessing' stamp: 'ar 1/31/2012 14:25'!
 next: anInteger 	"Answer the next anInteger elements of my collection.  overriden for simplicity"	[(position + anInteger >= readLimit) and:[chunkSize ~= 0]] 		whileTrue:[self nextChunk].	^super next: anInteger! !
 
-!WebChunkedStream methodsFor: 'accessing' stamp: 'ar 1/31/2012 16:01'!
-nextChunk	"Answer the next chunk from a message using chunked transfer encoding."	| chunk |	chunkSize = 0 ifTrue:[^'']. "read last chunk"	chunkSize := Integer readFrom: (sourceStream upToAll: String crlf) asString base: 16.	chunkSize = 0 ifFalse:[chunk := sourceStream next: chunkSize].	sourceStream skip: 2. "CrLf"	(chunkSize + readLimit - position) <= collection size ifTrue:[		collection replaceFrom: 1 to: (readLimit-position) with: collection startingAt: position+1.		readLimit := readLimit - position.		position := 0.		collection replaceFrom: readLimit+1 to: readLimit + chunkSize with: chunk startingAt: 1.		readLimit := readLimit + chunkSize.	] ifFalse:[		collection := collection, chunk.		readLimit := readLimit + chunkSize.	].	^chunk! !
+!WebChunkedStream methodsFor: 'accessing' stamp: 'DSG 5/29/2012 13:40'!
+nextChunk	"Answer the next chunk from a message using chunked transfer encoding."	| chunk |	chunkSize = 0 ifTrue:[^'']. "read last chunk"	chunkSize := Integer readFrom: (sourceStream upToAll: String crlfString) asString base: 16.	chunkSize = 0 ifFalse:[chunk := sourceStream next: chunkSize].	sourceStream skip: 2. "CrLf"	(chunkSize + readLimit - position) <= collection size ifTrue:[		collection replaceFrom: 1 to: (readLimit-position) with: collection startingAt: position+1.		readLimit := readLimit - position.		position := 0.		collection replaceFrom: readLimit+1 to: readLimit + chunkSize with: chunk startingAt: 1.		readLimit := readLimit + chunkSize.	] ifFalse:[		collection := collection, chunk.		readLimit := readLimit + chunkSize.	].	^chunk! !
 
 !WebChunkedStream methodsFor: 'initialize' stamp: 'ar 1/31/2012 14:24'!
 on: aStream	sourceStream := aStream.	collection := (aStream isBinary ifTrue:[ByteArray] ifFalse:[String]) new.	position := readLimit := 0.! !
@@ -412,8 +412,9 @@ scheme: aString	"The scheme used for the request (usually http or https)"	sch
 !WebClient methodsFor: 'sending' stamp: 'ar 2/25/2010 22:16'!
 sendRequest: request	"Send an http request"	^self sendRequest: request content: nil size: 0! !
 
-!WebClient methodsFor: 'sending' stamp: 'ar 8/31/2010 21:19'!
-sendRequest: request content: contentStream size: streamSize	"Send an http request"	^self sendRequest: request contentBlock:[:aStream|		contentStream ifNotNil:[			"Upload content if provided"			contentStream position: 0.			request streamFrom: contentStream to: aStream size: streamSize 				progress:[:total :amount|					(HTTPProgress new) 						total: total; 						amount: amount;						signal: 'Uploading...']]].! !
+!WebClient methodsFor: 'sending' stamp: 'DSG 5/25/2012 23:35'!
+sendRequest: request content: contentStream size: streamSize	"Send an http request"	^self sendRequest: request contentBlock:[:aStream|		contentStream ifNotNil:[			"Upload content if provided"			contentStream position: 0.			request streamFrom: contentStream to: aStream size: streamSize 				progress:[:total :amount|					(ProgressBarMorph new) 
+						value: amount / total.						]]].! !
 
 !WebClient methodsFor: 'sending' stamp: 'ar 9/16/2010 21:52'!
 sendRequest: request contentBlock: contentBlock	"Send an http request"	|  response repeatRedirect repeatAuth |	"XXXX: Fixme. Pre-authenticate the request if we have valid auth credentials"	redirections := Dictionary new.		["The outer loop handles redirections"	repeatRedirect := false.	"Always update the host header due to redirect"	request headerAt: 'Host' put: server.		["The inner loop handles authentication"		repeatAuth := false.		"Connect can fail if SSL proxy CONNECT is involved"		self connect ifNotNil:[:resp| ^resp].				"Write the request to the debugLog if present"		debugLog ifNotNil:[self writeRequest: request on: debugLog].		"Send the request itself"		self writeRequest: request on: stream.		contentBlock value: stream.		response := request newResponse readFrom: stream.		response url: (scheme, '://', server, request rawUrl).		debugLog ifNotNil:[			response writeOn: debugLog.			debugLog flush.		].		response setCookiesDo:[:cookie| 			self acceptCookie: cookie host: self serverName path: request url.		].		accessLog ifNotNil:[			WebUtils logRequest: request response: response on: accessLog		].		"Handle authentication if needed"		(self allowAuth and:[response code = 401 or:[response code = 407]]) ifTrue:[			"Eat up the content of the previous response"			response content.			repeatAuth := self authenticate: request from: response.		].		repeatAuth] whileTrue.	"Flush previous authState.	XXXX: Fixme. authState must be preserved for pre-authentication of requests."	self flushAuthState.	"Handle redirect if needed"	(self allowRedirect and:[response isRedirect]) ifTrue:[		"Eat up the content of the previous response"		response content.		repeatRedirect := self redirect: request from: response.	].	repeatRedirect] whileTrue:[		"When redirecting, remove authentication headers"		request removeHeader: 'Authorization'.		request removeHeader: 'Proxy-Authorization'.	].	"If the response is not a success, eat up its content"	(response isSuccess or:[response isInformational]) ifFalse:[response content].	^response! !
@@ -430,8 +431,8 @@ serverName	"Returns the name part of the server:port description"	^server cop
 !WebClient methodsFor: 'accessing' stamp: 'ar 2/20/2010 19:21'!
 serverPort	"Returns the port of the server:port description"	^(server copyAfter: $:) 		ifEmpty:[self defaultPort]		ifNotEmpty:[:portString| portString asInteger].! !
 
-!WebClient methodsFor: 'initialize' stamp: 'ar 7/25/2010 16:05'!
-sslConnect	"Connect the client to a web server"	| sqSSL |	proxyServer ifNotNil:[ | resp |		"If we have a proxy server, do the proxy connect"		resp := self proxyConnect.		resp isSuccess ifFalse:[^resp].	].	sqSSL := Smalltalk at: #SqueakSSL ifAbsent:[self error: 'SqueakSSL is missing'].	"Convert the stream to a secure stream"	stream := sqSSL secureSocketStream on: stream socket.	stream timeout: timeout.	"Do the SSL handshake"	stream sslConnect.	"And cert verification"	stream verifyCert: self serverName.	^nil "indicating success"! !
+!WebClient methodsFor: 'initialize' stamp: 'DSG 5/25/2012 23:17'!
+sslConnect	"Connect the client to a web server"	| sqSSL |	proxyServer ifNotNil:[ | resp |		"If we have a proxy server, do the proxy connect"		resp := self proxyConnect.		resp isSuccess ifFalse:[^resp].	].	sqSSL := Smalltalk at: #SecureSocket ifAbsent:[self error: 'SqueakSSL is missing'].	"Convert the stream to a secure stream"	stream := sqSSL secureSocketStream on: stream socket.	stream timeout: timeout.	"Do the SSL handshake"	stream sslConnect.	"And cert verification"	stream verifyCert: self serverName.	^nil "indicating success"! !
 
 !WebClient methodsFor: 'accessing' stamp: 'ar 2/20/2010 11:12'!
 timeout	"Timeout for the http operations"	^timeout! !
@@ -1066,8 +1067,8 @@ defaultHttpMethods	"Answer the list of HTTP methods that should be be supported
 !WebServer methodsFor: 'initialize' stamp: 'ar 11/1/2010 21:07'!
 destroy	"Destroys the receiver"	self stopListener.	self destroyConnections.	listenerSocket ifNotNil:[listenerSocket destroy].	"De-register the WebServer"	(self class forUrl: self siteUrl ifAbsent:[self]) == self 		ifTrue:[self class removeUrl: siteUrl]! !
 
-!WebServer methodsFor: 'initialize' stamp: 'ar 5/11/2010 20:40'!
-destroyConnections	"Destroy all current connections."	mutex critical:[		connections do:[:p| p terminate].		connections removeAll.	].! !
+!WebServer methodsFor: 'initialize' stamp: 'DSG 5/25/2012 12:42'!
+destroyConnections	"Destroy all current connections."	mutex critical:[		connections do:[:p| p terminate].		connections removeAll: connections.	].! !
 
 !WebServer methodsFor: 'authentication' stamp: 'ar 3/30/2010 20:35'!
 digestAuth: request realm: realm header: authHeader	"Authenticates an incoming request using Digest auth."	| user nonce uri response ha1 ha2 md5 qop nc cnonce 	  nonceData nonceCounter nonceTimeout params |	params := WebUtils parseAuthParams: authHeader.	"Flush the nonce cache randomly about every 100 auth attempts"	100 atRandom = 42 ifTrue:[self flushNonceCache].	user := params at: 'username' ifAbsent:[''].	nonce := params at: 'nonce' ifAbsent:[''].	uri := params at: 'uri' ifAbsent:[request url].	response := params at: 'response' ifAbsent:[''].		qop := params at: 'qop' ifAbsent:[''].	qop = 'auth' ifFalse:[^false]. "we require qop=auth"	nc := params at: 'nc' ifAbsent:[''].	cnonce := params at: 'cnonce' ifAbsent:[''].		"Verify that this is a nonce that we have handed out, that it isn't expired	and that the nc counter has increased from the last use."	mutex critical:[		nonceData := nonceCache at: nonce ifAbsent:[^false].	].	nonceCounter := nonceData first.		"last used nc"	nonceTimeout := nonceData second.	"timeout for nonce"	nc <= nonceCounter ifTrue:[^false]. 	"nc must increase"	Time totalSeconds > nonceTimeout ifTrue:[^false]. "nonce expired"	nonceData at: 1 put: nc.	ha1 := self passwordHashAt: user, ':', realm.	ha2 := WebUtils md5Digest: request method, ':', uri.	md5 := WebUtils md5Digest: ha1, ':', nonce, ':', nc, ':', cnonce, ':', qop, ':', ha2.	^md5 = response! !
@@ -1105,8 +1106,8 @@ handleError: ex request: aRequest	"The default error handling during processing
 !WebServer methodsFor: 'authentication' stamp: 'ar 3/30/2010 20:36'!
 hashUser: user password: pass realm: realm	"Creates a hash for the given username password pair.	This method is the ha1 part of digest auth and can be used for both digest	as well as basic auth."	^WebUtils md5Digest: user, ':', realm, ':', pass! !
 
-!WebServer methodsFor: 'initialize' stamp: 'ar 5/11/2010 20:21'!
-initialize	"Initialize the receiver"	mutex := Mutex new.	entryPoints := Dictionary new.	connections := IdentitySet new.	vault := Dictionary new.	nonceCache := Dictionary new.	sessions := Dictionary new.	self logAction:[:aString| Transcript cr; show: aString].! !
+!WebServer methodsFor: 'initialize' stamp: 'DSG 5/25/2012 11:44'!
+initialize	"Initialize the receiver"	mutex := Mutex new.	entryPoints := Dictionary new.	connections := IdentitySet new.	vault := Dictionary new.	nonceCache := Dictionary new.	sessions := Dictionary new.	self logAction:[:aString| Transcript nextPutAll: (String crString); show: aString].! !
 
 !WebServer methodsFor: 'handling' stamp: 'ar 2/20/2010 14:30'!
 invokeAction: action request: request	"Invokes the given action. Subclasses can override this method to serialize	actions if necessary. At this point, the request header has been read from	the network, but not its content."	^action valueWithArguments: {request}! !
