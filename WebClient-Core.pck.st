@@ -1,4 +1,4 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 1 January 2013 at 6:55 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 1 January 2013 at 7:25:45 pm'!
 'Description Please enter a description for this package '!
 !classDefinition: #WebAuthRequired category: #'WebClient-Core'!
 Exception subclass: #WebAuthRequired
@@ -138,12 +138,13 @@ To view the documentation evaluate:
 !WebCookie commentStamp: 'ar 2/22/2010 05:28' prior: 0!
 WebCookie represents an http cookie for use by WebClient.!
 
-!WebMessage commentStamp: 'gsa 1/1/2013 18:54' prior: 0!
+!WebMessage commentStamp: 'gsa 1/1/2013 19:23' prior: 0!
 A common base class for WebRequest and WebResponse.
 
 Adaptations for Cuis:
 
-1/1/2013 gsa: getContent!
+1/1/2013 gsa: getContent
+1/1/2013 gsa: contentWithProgress:!
 
 !WebRequest commentStamp: 'ar 2/23/2010 10:38' prior: 0!
 Represents an HTTP request for WebClient/WebServer.!
@@ -2133,13 +2134,14 @@ contentType: aString
 
 	^self headerAt: 'Content-Type' put: aString! !
 
-!WebMessage methodsFor: 'accessing' stamp: 'ar 2/23/2010 22:03'!
+!WebMessage methodsFor: 'accessing' stamp: 'gsa 1/1/2013 19:22'!
 contentWithProgress: progressBlock
 	"Reads and caches available content and returns it."
+	"gsa 1/1/2013 - Changed ByteString not present in Cuis by String"
 
 	^content ifNil:[	| length |
 		length := self contentLength.
-		content := (stream isBinary ifTrue:[ByteArray] ifFalse:[ByteString]) 
+		content := (stream isBinary ifTrue:[ByteArray] ifFalse:[String]) 
 			new: (length ifNil:[1000])
 			streamContents:[:s| self streamFrom: stream to: s size: length progress: progressBlock]].! !
 
@@ -3094,11 +3096,12 @@ stream200Response: aStream size: streamSize type: contentType do: aBlock
 	aBlock value: resp.
 	^self sendResponse: resp contentStream: aStream size: streamSize.! !
 
-!WebRequest methodsFor: 'accessing' stamp: 'ar 3/27/2010 01:43'!
+!WebRequest methodsFor: 'accessing' stamp: 'gsa 1/1/2013 19:24'!
 url
 	"The url without fragment or arguments"
 
-	^((rawUrl copyUpTo: $#) copyUpTo: $?) unescapePercentsWithTextEncoding: nil! !
+	"^((rawUrl copyUpTo: $#) copyUpTo: $?) unescapePercentsWithTextEncoding: nil"
+	^((rawUrl copyUpTo: $#) copyUpTo: $?) ! !
 
 !WebRequest methodsFor: 'printing' stamp: 'ar 2/20/2010 16:33'!
 writeOn: aStream

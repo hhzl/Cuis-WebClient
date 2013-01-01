@@ -1,0 +1,30 @@
+This fork includes:
+
+WebClient-Core.pck.st from WebClient-Core-ar.92.mcz
+WebClient-Tests.pck.st from WebClient-Tests-ar.46.mcz
+WebClient-HTTP.pck.st from WebClient-HTTP-ar.1.mcz (not used still in Cuis)
+
+See class comments for port notes.
+
+Some stuff working with this port:
+
+(WebClient httpGet: 'http://www.arduinosoftware.com') content.
+
+WebClient httpGet: 'http://www.arduinosoftware.com/'.
+
+Installation Notes:
+
+Before WebClient-Core and Test you must to install:
+
+Cuis-CompatibilityWithOtherSmalltalks
+Cuis-Network-MIME
+Cuis-Network-Protocols
+Cuis-Network-RFC822
+Cuis-Network-UUID
+Cuis-Network-Url
+Cuis-NetworkTests-Protocols
+Cuis-NetworkTests-RFC822
+Cuis-NetworkTests-UUID
+Cuis-Settings-Network
+
+CAUTION: Most of this packages are work in progress. I'm tweaking them as I'm needing more features. 
