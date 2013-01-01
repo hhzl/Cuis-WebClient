@@ -1,0 +1,7 @@
+This fork includes:
+
+WebClient-Core.pck.st from WebClient-Core-ar.92.mcz
+WebClient-Tests.pck.st from WebClient-Tests-ar.46.mcz
+WebClient-HTTP.pck.st from WebClient-HTTP-ar.1.mcz (not used still in Cuis)
+
+See class comments for port notes.
