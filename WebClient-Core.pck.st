@@ -1,4 +1,4 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 2 January 2013 at 2:37:43 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 2 January 2013 at 3:18:54 pm'!
 'Description Please enter a description for this package '!
 !classDefinition: #WebAuthRequired category: #'WebClient-Core'!
 Exception subclass: #WebAuthRequired
@@ -152,7 +152,7 @@ Represents an HTTP request for WebClient/WebServer.!
 !WebResponse commentStamp: 'ar 2/23/2010 10:39' prior: 0!
 Represents an HTTP response for WebClient/WebServer.!
 
-!WebServer commentStamp: 'gsa 1/2/2013 13:28' prior: 0!
+!WebServer commentStamp: 'gsa 1/2/2013 15:18' prior: 0!
 WebClient provides a simple yet complete HTTP server implementation.
 
 The next is not available still in Cuis.
@@ -168,7 +168,11 @@ TO-DO GSA 2/1/2013
 	"Check how to do with Security Manager in Cuis"
 	"SecurityManager default printStateOn: strm."
 
-!
+#browseDir: directory request: request
+		"TO-DO 2/1/2013 GSA Check"
+		"send200Response: (listing convertToWithConverter: UTF8TextConverter new)" 
+		"TO-DO 2/1/2013 GSA Check"
+		"contentType: 'text/html; charset=utf-8'."	!
 
 !WebSocket commentStamp: '<historical>' prior: 0!
 A wrapper object for the WebSocket API.!
@@ -4114,7 +4118,7 @@ benchmark
 	^(amount  * 1000 // time) asStringWithCommas, ' bytes/sec'
 ! !
 
-!WebServer class methodsFor: 'examples' stamp: 'SvenVanCaekenberghe 6/14/2010 20:32'!
+!WebServer class methodsFor: 'examples' stamp: 'gsa 1/2/2013 15:16'!
 browseDir: directory request: request
 	"Responds with a directory listing back to the original request"
 
@@ -4145,8 +4149,14 @@ browseDir: directory request: request
  	].
 
 	request 
-		send200Response: (listing convertToWithConverter: UTF8TextConverter new) 
-		contentType: 'text/html; charset=utf-8'.
+		"TO-DO 2/1/2013 GSA Check"
+		"send200Response: (listing convertToWithConverter: UTF8TextConverter new)" 
+send200Response: listing
+		
+		"TO-DO 2/1/2013 GSA Check"
+		"contentType: 'text/html; charset=utf-8'."
+		contentType: 'text/html; charset=ISO-8859-1'.
+		
 
 ! !
 
