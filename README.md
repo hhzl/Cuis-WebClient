@@ -63,7 +63,7 @@ Clone in your computer:
 
 https://github.com/garduino/Cuis-Pharo14CompatibilityLayer
 
-and the repo of WebClient (Mine or from David Graham if get integrated).
+and the repo of WebClient (Mine: https://github.com/garduino/Cuis-WebClient or from David Graham when get integrated: https://github.com/davidgraham/Cuis-WebClient).
 
 Then a script as the following will do the magic:
 
