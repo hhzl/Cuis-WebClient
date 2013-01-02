@@ -1,4 +1,4 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 2 January 2013 at 1:43:44 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 2 January 2013 at 2:37:43 pm'!
 'Description Please enter a description for this package '!
 !classDefinition: #WebAuthRequired category: #'WebClient-Core'!
 Exception subclass: #WebAuthRequired
@@ -4387,7 +4387,7 @@ reset		"WebServer reset"
 		Default := nil.
 	].! !
 
-!WebServer class methodsFor: 'accessing' stamp: 'ar 8/22/2010 12:57'!
+!WebServer class methodsFor: 'accessing' stamp: 'gsa 1/2/2013 14:34'!
 serverDate
 	"Returns the date string to be used in responses"
 
@@ -4395,8 +4395,12 @@ serverDate
 	^String streamContents:[:s|
 		date := DateAndTime now asUTC.
 		s nextPutAll: date dayOfWeekAbbreviation, ', '.
-		date asDate printOn: s format: #(1 2 3 $  2 1 2 ).
-		s space; nextPutAll: (Time seconds: date asSeconds) print24.
+		"date asDate printOn: s format: #(1 2 3 $  2 1 2 )."
+		date date printOn: s format: #(1 2 3 $  2 1 2 ).
+		"s space; nextPutAll: (Time seconds: date asSeconds) print24."
+		s space; nextPutAll: (Time now) print24.
+
+
 		s nextPutAll: ' GMT'.
 	].! !
 
