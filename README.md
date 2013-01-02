@@ -71,6 +71,7 @@ Then a script as the following will do the magic:
     slash _ FileDirectory slash.
     repo := 'C:\Users\MyUser\Documents\GitHub'. --> *** Replace with your real directory ***
     {
+	repo, slash, 'Cuis-Cryptography', slash, 'Cuis-System-Hashing.pck.st' .
     repo, slash, 'Cuis-CompatibilityWithOtherSmalltalks', slash, 'Cuis-CompatibilityWithOtherSmalltalks.pck.st' .
 	repo, slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-MIME.pck.st' .
     repo, slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-UUID.pck.st' .
