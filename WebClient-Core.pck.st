@@ -1,4 +1,4 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 1 January 2013 at 7:25:45 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 1 January 2013 at 9:01:30 pm'!
 'Description Please enter a description for this package '!
 !classDefinition: #WebAuthRequired category: #'WebClient-Core'!
 Exception subclass: #WebAuthRequired
@@ -169,8 +169,14 @@ A wrapper object for the WebSocket API.!
 !WebSocket07 commentStamp: '<historical>' prior: 0!
 A wrapper object for the WebSocket API.!
 
-!WebUtils commentStamp: 'ar 2/23/2010 10:39' prior: 0!
-WebUtils contains a number of utility methods used by WebClient/WebServer.!
+!WebUtils commentStamp: 'gsa 1/1/2013 21:00' prior: 0!
+WebUtils contains a number of utility methods used by WebClient/WebServer.
+
+1/1/2013 GSA handleAuth:
+
+Replaced UIManager current for FillInTheBlankMorph.
+
+As don't exist #requestPassword we should add it!!!
 
 !WebAuthRequired methodsFor: 'accessing' stamp: 'ar 2/10/2012 13:14'!
 client
@@ -5113,7 +5119,7 @@ extractWebSocketKey: field
 	^digits // spaces.
 ! !
 
-!WebUtils class methodsFor: 'auth' stamp: 'ar 2/10/2012 13:53'!
+!WebUtils class methodsFor: 'auth' stamp: 'gsa 1/1/2013 20:58'!
 handleAuth: aBlock
 	"Utility method to handle web authentication requests interactively.
 
@@ -5127,12 +5133,26 @@ handleAuth: aBlock
 	^[aBlock value] on: WebAuthRequired do:[:ex|
 		"Allow outer handlers to take over authentication"
 		ex isNested ifFalse:[
-			user := UIManager default request:  ex message, 
+			user := FillInTheBlankMorph request:  ex message, 
 				'\Please enter your user name:' withCRs initialAnswer:''.
+		
+		" UIManager default request:  ex message, 
+				'\Please enter your user name:' withCRs initialAnswer:''.
+"
+	
+	"Cuis don't have #requestPassword, we should add it"
+		
 			user ifNotEmpty:[
 				"Just a little obfuscation to avoid completely plain passwords"
-				pass := (UIManager default requestPassword:
+				pass := (FillInTheBlankMorph request:
 					'Please enter the password for "', user,'":') base64Encoded.
+					
+					
+					
+				" pass := (UIManager default requestPassword:
+					'Please enter the password for ""', user,'"":') base64Encoded.	"
+					
+					
 				 ex username: user password: [pass base64Decoded]]].
 		ex pass].! !
 
