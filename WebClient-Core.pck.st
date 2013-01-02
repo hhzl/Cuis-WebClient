@@ -1,4 +1,4 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 2 January 2013 at 3:18:54 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 2 January 2013 at 8:36:52 pm'!
 'Description Please enter a description for this package '!
 !classDefinition: #WebAuthRequired category: #'WebClient-Core'!
 Exception subclass: #WebAuthRequired
@@ -183,7 +183,7 @@ A wrapper object for the WebSocket API.!
 !WebSocket07 commentStamp: '<historical>' prior: 0!
 A wrapper object for the WebSocket API.!
 
-!WebUtils commentStamp: 'gsa 1/1/2013 21:00' prior: 0!
+!WebUtils commentStamp: 'gsa 1/2/2013 18:47' prior: 0!
 WebUtils contains a number of utility methods used by WebClient/WebServer.
 
 1/1/2013 GSA handleAuth:
@@ -5054,7 +5054,7 @@ decodeUrlEncodedForm: aString multipleValues: aBool
 	].
 	^fields! !
 
-!WebUtils class methodsFor: 'proxy' stamp: 'ar 5/10/2010 09:30'!
+!WebUtils class methodsFor: 'proxy' stamp: 'gsa 1/2/2013 18:49'!
 defaultProxyServer
 	"Answer the default proxy server to use."
 
@@ -5068,7 +5068,7 @@ defaultProxyServer
 		^HTTPSocket httpProxyServer, ':', HTTPSocket httpProxyPort
 	].! !
 
-!WebUtils class methodsFor: 'decoding' stamp: 'ar 1/17/2011 22:16'!
+!WebUtils class methodsFor: 'decoding' stamp: 'gsa 1/2/2013 18:48'!
 encodeMultipartForm: fieldMap boundary: boundary
 	"Encodes the fieldMap as multipart/form-data.
 
@@ -5120,7 +5120,7 @@ encodeUrlEncodedForm: fieldMap
 		] separatedBy:[s nextPutAll:'&'].
 	].! !
 
-!WebUtils class methodsFor: 'websockets' stamp: 'ar 7/20/2010 20:38'!
+!WebUtils class methodsFor: 'websockets' stamp: 'gsa 1/2/2013 18:50'!
 extractWebSocketKey: field
 	"Decodes a WebSocket key:
 
@@ -5144,7 +5144,7 @@ extractWebSocketKey: field
 	^digits // spaces.
 ! !
 
-!WebUtils class methodsFor: 'auth' stamp: 'gsa 1/1/2013 20:58'!
+!WebUtils class methodsFor: 'auth' stamp: 'gsa 1/2/2013 18:51'!
 handleAuth: aBlock
 	"Utility method to handle web authentication requests interactively.
 
@@ -5181,7 +5181,7 @@ handleAuth: aBlock
 				 ex username: user password: [pass base64Decoded]]].
 		ex pass].! !
 
-!WebUtils class methodsFor: 'oauth' stamp: 'ar 8/12/2010 16:24'!
+!WebUtils class methodsFor: 'oauth' stamp: 'gsa 1/2/2013 18:52'!
 hmacSha1: message key: signKey
 	"Compute the SHA1 HMAC for the given message"
 
@@ -5530,14 +5530,17 @@ logRequest: request response: response on: streamOrFilename
 		ifFalse:[stream close].
 ! !
 
-!WebUtils class methodsFor: 'misc' stamp: 'ar 7/21/2010 00:09'!
+!WebUtils class methodsFor: 'misc' stamp: 'gsa 1/2/2013 19:02'!
 mcVersion
 	"Answers the Monticello version of WebServer's MC package"
 
 	| version |
+" No Monticello in Cuis"
+"
 	Smalltalk at: #MCWorkingCopy ifPresent:[:mc|
 		mc managersForClass: self do:[:wc|
 			wc ancestors ifNotEmpty:[:ancestry| version := ancestry first name]]].
+"
 	^version ifNil:[''].! !
 
 !WebUtils class methodsFor: 'md5' stamp: 'ar 2/20/2010 12:45'!
@@ -5678,11 +5681,11 @@ md5Transform: in hash: hash
 
 	^hash! !
 
-!WebUtils class methodsFor: 'decoding' stamp: 'ar 7/20/2010 20:06'!
+!WebUtils class methodsFor: 'decoding' stamp: 'gsa 1/2/2013 18:49'!
 multipartBoundary
 	"Answer a string to be used as multpart boundary in posts"
 
-	^'----squeak-', Date today,'-', Time millisecondClockValue, '-webclient-----'.! !
+	^'----cuis---', Date today,'-', Time millisecondClockValue, '-webclient-----'.! !
 
 !WebUtils class methodsFor: 'oauth' stamp: 'ar 8/24/2010 10:04'!
 oAuthSign: webRequest url: requestUrl extra: postFields using: params
@@ -5799,14 +5802,14 @@ platformName
 
 	^Smalltalk getSystemAttribute: 1001! !
 
-!WebUtils class methodsFor: 'proxy' stamp: 'ar 2/22/2010 06:36'!
+!WebUtils class methodsFor: 'proxy' stamp: 'gsa 1/2/2013 18:50'!
 proxyExceptionsDo: aBlock
 	"Evaluate aBlock with all registered proxy exceptions. 
 	Uses the information from HTTPSocket."
 
 	HTTPSocket httpProxyExceptions do: aBlock.! !
 
-!WebUtils class methodsFor: 'proxy' stamp: 'ar 2/23/2010 06:20'!
+!WebUtils class methodsFor: 'proxy' stamp: 'gsa 1/2/2013 18:50'!
 proxyServerFor: serverName
 	"Answer the proxy server to use for the given server:port
 	Returns the proxy server:port to use or nil if no proxy is required."
@@ -5852,7 +5855,7 @@ rotate: value by: amount
 	^((value bitAnd: lowMask) bitShift: amount) + 
 		((value bitAnd: highMask) bitShift: amount-32)! !
 
-!WebUtils class methodsFor: 'oauth' stamp: 'ar 8/12/2010 16:31'!
+!WebUtils class methodsFor: 'oauth' stamp: 'gsa 1/2/2013 18:48'!
 sha1Hash: message
 	"Compute the SHA1 hash for the given message. Slightly different from 
 	SecureHashAlgorithm to produce fixed-length byte arrays."
@@ -5924,7 +5927,7 @@ vmVersion
 
 	^Smalltalk getSystemAttribute: 1004! !
 
-!WebUtils class methodsFor: 'websockets' stamp: 'ar 7/8/2010 18:59'!
+!WebUtils class methodsFor: 'websockets' stamp: 'gsa 1/2/2013 18:51'!
 webSocketHandshake: key1 with: key2 with: data
 	"Do the actual WebSocket handshake computation"
 
@@ -5935,7 +5938,7 @@ webSocketHandshake: key1 with: key2 with: data
 	bytes replaceFrom: 9 to: 16 with: data.
 	^(self md5HashStream: bytes readStream) reversed! !
 
-!WebUtils class methodsFor: 'websockets' stamp: 'ar 9/26/2011 10:30'!
+!WebUtils class methodsFor: 'websockets' stamp: 'gsa 1/2/2013 18:51'!
 webSocketHash07: key
 	"Do the actual WebSocket hash computation"
 
