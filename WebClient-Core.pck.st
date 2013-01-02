@@ -1,4 +1,4 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 1 January 2013 at 9:01:30 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 2 January 2013 at 1:43:44 pm'!
 'Description Please enter a description for this package '!
 !classDefinition: #WebAuthRequired category: #'WebClient-Core'!
 Exception subclass: #WebAuthRequired
@@ -152,12 +152,22 @@ Represents an HTTP request for WebClient/WebServer.!
 !WebResponse commentStamp: 'ar 2/23/2010 10:39' prior: 0!
 Represents an HTTP response for WebClient/WebServer.!
 
-!WebServer commentStamp: 'ar 5/4/2010 13:17' prior: 0!
+!WebServer commentStamp: 'gsa 1/2/2013 13:28' prior: 0!
 WebClient provides a simple yet complete HTTP server implementation.
+
+The next is not available still in Cuis.
 
 To view the documentation evaluate:
 
 	HelpBrowser openOn: WebServerHelp.
+
+
+
+TO-DO GSA 2/1/2013
+#systemInfoOn: 
+	"Check how to do with Security Manager in Cuis"
+	"SecurityManager default printStateOn: strm."
+
 !
 
 !WebSocket commentStamp: '<historical>' prior: 0!
@@ -3311,7 +3321,7 @@ protocol: protocol code: code
 
 	^self new protocol: protocol code: code! !
 
-!WebServer methodsFor: 'logging' stamp: 'ar 7/28/2010 19:56'!
+!WebServer methodsFor: 'logging' stamp: 'gsa 1/2/2013 13:08'!
 accessLog
 	"The standard access log. Can be either a stream or a string; if the access log
 	is a string then the string is assumed to be a file name and the file will be opened 
@@ -3319,7 +3329,7 @@ accessLog
 
 	^accessLog! !
 
-!WebServer methodsFor: 'logging' stamp: 'ar 7/28/2010 19:56'!
+!WebServer methodsFor: 'logging' stamp: 'gsa 1/2/2013 13:08'!
 accessLog: aStreamOrFilename
 	"The standard access log. Can be either a stream or a string; if the access log
 	is a string then the string is assumed to be a file name and the file will be opened 
@@ -3327,7 +3337,7 @@ accessLog: aStreamOrFilename
 
 	accessLog := aStreamOrFilename! !
 
-!WebServer methodsFor: 'services' stamp: 'ar 5/11/2010 20:10'!
+!WebServer methodsFor: 'services' stamp: 'gsa 1/2/2013 13:10'!
 addService: entryPoint action: aBlockOrMessage
 	"Add a service to the web server. The service is specified by an entryPoint, 
 	denoting the url under which the service can be requested 
@@ -3338,7 +3348,7 @@ addService: entryPoint action: aBlockOrMessage
 		action: aBlockOrMessage 
 		methods: self defaultHttpMethods.! !
 
-!WebServer methodsFor: 'services' stamp: 'ar 5/11/2010 20:10'!
+!WebServer methodsFor: 'services' stamp: 'gsa 1/2/2013 13:13'!
 addService: entryPoint action: aBlockOrMessage methods: methods
 	"Add a service to the web server. The service is specified by an entryPoint, 
 	denoting the url under which the service can be requested 
@@ -3351,7 +3361,7 @@ addService: entryPoint action: aBlockOrMessage methods: methods
 		entryPoints at: entryPoint asLowercase put: {methods. aBlockOrMessage}.
 	].! !
 
-!WebServer methodsFor: 'handling' stamp: 'ar 5/11/2010 20:38'!
+!WebServer methodsFor: 'handling' stamp: 'gsa 1/2/2013 13:13'!
 asyncHandleConnectionFrom: aSocket
 	"Handle an incoming connection asynchronously to avoid blocking the listener."
 
@@ -3366,7 +3376,7 @@ asyncHandleConnectionFrom: aSocket
 	handlerProcess resume.
 ! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 3/30/2010 20:43'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:14'!
 authAccept: method request: request realm: realm header: authHeader
 	"Performs the requested authentication method. 
 	Returns true if successfully authenticated.
@@ -3378,7 +3388,7 @@ authAccept: method request: request realm: realm header: authHeader
 	} otherwise:[false].
 ! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 3/30/2010 20:43'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:14'!
 authHeader: method request: request realm: realm
 	"Answer the authentication header for the given method.
 	Subclasses can extend this method to support more auth methods."
@@ -3390,7 +3400,7 @@ authHeader: method request: request realm: realm
 	
 	! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 3/30/2010 20:43'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:14'!
 authenticate: request realm: realm methods: accepted do: aBlock
 	"Authenticates an incoming request using one of the accepted methods.
 
@@ -3416,7 +3426,7 @@ authenticate: request realm: realm methods: accepted do: aBlock
 	request sendResponse: resp content: '<html><head><title>401 Unauthorized</title></head><body><h1>401 Unauthorized</h1><p>You are not authorized to access the requested URL</p></body></html>'.
 ! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 3/30/2010 20:38'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:14'!
 basicAuth: request realm: realm header: authHeader
 	"Perform Basic auth for the given request"
 
@@ -3432,33 +3442,33 @@ basicAuth: request realm: realm header: authHeader
 	^(self passwordHashAt: user, ':', realm) = hash
 ! !
 
-!WebServer methodsFor: 'initialize' stamp: 'ar 5/11/2010 20:10'!
+!WebServer methodsFor: 'initialize' stamp: 'gsa 1/2/2013 13:16'!
 builtinHttpMethods
 	"Returns the list of HTTP methods that the server handles built-in,
 	i.e., without passing them to the registered service."
 
 	^#('HEAD' 'TRACE' 'OPTIONS')! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 7/29/2010 18:49'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:16'!
 certName
 	"The cert name to use for a secure (SSL/TLS) web server."
 
 	^certName! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 7/29/2010 18:49'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:16'!
 certName: aString
 	"The cert name to use for a secure (SSL/TLS) web server."
 
 	certName := aString.! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 5/11/2010 20:22'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:17'!
 connections
 	"The active connection processes. Can only be examined after aquiring
 	the WebServer's mutex."
 
 	^connections! !
 
-!WebServer methodsFor: 'initialize' stamp: 'ar 2/23/2010 12:10'!
+!WebServer methodsFor: 'initialize' stamp: 'gsa 1/2/2013 13:16'!
 critical: aBlock
 	"Evaluate aBlock protected byt the server's mutex.
 	Necessary if code needs to manipulate internal server state."
@@ -3466,14 +3476,14 @@ critical: aBlock
 	^mutex critical: aBlock
 ! !
 
-!WebServer methodsFor: 'initialize' stamp: 'ar 5/11/2010 20:10'!
+!WebServer methodsFor: 'initialize' stamp: 'gsa 1/2/2013 13:16'!
 defaultHttpMethods
 	"Answer the list of HTTP methods that should be be supported by default.
 	The methods must be implemented by the request handler."
 
 	^#('GET' 'POST')! !
 
-!WebServer methodsFor: 'initialize' stamp: 'ar 11/1/2010 21:07'!
+!WebServer methodsFor: 'initialize' stamp: 'gsa 1/2/2013 13:16'!
 destroy
 	"Destroys the receiver"
 
@@ -3486,7 +3496,7 @@ destroy
 		ifTrue:[self class removeUrl: siteUrl]
 ! !
 
-!WebServer methodsFor: 'initialize' stamp: 'ar 5/11/2010 20:40'!
+!WebServer methodsFor: 'initialize' stamp: 'gsa 1/2/2013 13:16'!
 destroyConnections
 	"Destroy all current connections."
 
@@ -3496,7 +3506,7 @@ destroyConnections
 	].
 ! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 3/30/2010 20:35'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:14'!
 digestAuth: request realm: realm header: authHeader
 	"Authenticates an incoming request using Digest auth."
 
@@ -3536,13 +3546,13 @@ digestAuth: request realm: realm header: authHeader
 	^md5 = response
 ! !
 
-!WebServer methodsFor: 'handling' stamp: 'ar 2/23/2010 22:34'!
+!WebServer methodsFor: 'handling' stamp: 'gsa 1/2/2013 13:13'!
 dispatchRequest: request
 	"Look up the handler for a given request and dispatch to it"
 
 	^self dispatchRequest: request url: request url! !
 
-!WebServer methodsFor: 'handling' stamp: 'ar 7/28/2010 20:11'!
+!WebServer methodsFor: 'handling' stamp: 'gsa 1/2/2013 13:13'!
 dispatchRequest: request url: dispatchUrl
 	"Look up the handler for a given url and dispatch to it"
 
@@ -3588,7 +3598,7 @@ dispatchRequest: request url: dispatchUrl
 		].
 ! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 7/28/2010 20:24'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:17'!
 errorHandler
 	"The user-supplied error handler. If present the handler takes two arguments:
 		* The error being caught by WebServer
@@ -3598,7 +3608,7 @@ errorHandler
 
 	^errorHandler! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 7/28/2010 20:24'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:17'!
 errorHandler: aBlock
 	"The user-supplied error handler. If present the handler takes two arguments:
 		* The error being caught by WebServer
@@ -3608,7 +3618,7 @@ errorHandler: aBlock
 
 	errorHandler := aBlock.! !
 
-!WebServer methodsFor: 'errors' stamp: 'ar 2/20/2010 10:35'!
+!WebServer methodsFor: 'errors' stamp: 'gsa 1/2/2013 13:18'!
 errorReportFor: anError
 	"Provide a report for an error that's been caught during processing"
 
@@ -3621,7 +3631,7 @@ errorReportFor: anError
 		].
 	] on: Error do: [:ex| ex pass. 'error reporting failed'].! !
 
-!WebServer methodsFor: 'errors' stamp: 'ar 2/20/2010 10:35'!
+!WebServer methodsFor: 'errors' stamp: 'gsa 1/2/2013 13:19'!
 errorReportFor: anError stack: preStack on: strm
 	"Provide a report for an error that's been caught during processing"
 
@@ -3630,7 +3640,7 @@ errorReportFor: anError stack: preStack on: strm
 	self systemInfoOn: strm.
 ! !
 
-!WebServer methodsFor: 'errors' stamp: 'ar 2/20/2010 10:35'!
+!WebServer methodsFor: 'errors' stamp: 'gsa 1/2/2013 13:19'!
 errorStackFor: anError stack: preStack on: strm
 	"Provide a report for an error that's been caught during processing"
 
@@ -3652,7 +3662,7 @@ errorStackFor: anError stack: preStack on: strm
 	].
 ! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 2/23/2010 09:26'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:15'!
 flushNonceCache
 	"Flushes expired nonces from the cache"
 
@@ -3663,7 +3673,7 @@ flushNonceCache
 	].
 ! !
 
-!WebServer methodsFor: 'handling' stamp: 'ar 7/29/2010 18:46'!
+!WebServer methodsFor: 'handling' stamp: 'gsa 1/2/2013 13:13'!
 handleConnectionFrom: aSocket
 	"Synchronously handle an incoming socket connection."
 
@@ -3712,7 +3722,7 @@ handleConnectionFrom: aSocket
 		].
 	].! !
 
-!WebServer methodsFor: 'errors' stamp: 'ar 7/28/2010 20:35'!
+!WebServer methodsFor: 'errors' stamp: 'gsa 1/2/2013 13:19'!
 handleError: ex request: aRequest
 	"The default error handling during processing. Sends a 500 response."
 
@@ -3727,7 +3737,7 @@ handleError: ex request: aRequest
 	[self log: String cr, errReport] on: Error do:[:ex2| ex return].
 	aRequest send500Response: errReport. ! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 3/30/2010 20:36'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:15'!
 hashUser: user password: pass realm: realm
 	"Creates a hash for the given username password pair.
 	This method is the ha1 part of digest auth and can be used for both digest
@@ -3735,7 +3745,7 @@ hashUser: user password: pass realm: realm
 
 	^WebUtils md5Digest: user, ':', realm, ':', pass! !
 
-!WebServer methodsFor: 'initialize' stamp: 'ar 5/11/2010 20:21'!
+!WebServer methodsFor: 'initialize' stamp: 'gsa 1/2/2013 13:16'!
 initialize
 	"Initialize the receiver"
 
@@ -3748,7 +3758,7 @@ initialize
 	self logAction:[:aString| Transcript cr; show: aString].
 ! !
 
-!WebServer methodsFor: 'handling' stamp: 'ar 2/20/2010 14:30'!
+!WebServer methodsFor: 'handling' stamp: 'gsa 1/2/2013 13:14'!
 invokeAction: action request: request
 	"Invokes the given action. Subclasses can override this method to serialize
 	actions if necessary. At this point, the request header has been read from
@@ -3757,31 +3767,31 @@ invokeAction: action request: request
 	^action valueWithArguments: {request}
 ! !
 
-!WebServer methodsFor: 'testing' stamp: 'ar 3/30/2010 22:09'!
+!WebServer methodsFor: 'testing' stamp: 'gsa 1/2/2013 13:19'!
 isRunning
 	"Is the server still running?"
 
 	^self isStopped not! !
 
-!WebServer methodsFor: 'testing' stamp: 'ar 3/30/2010 22:09'!
+!WebServer methodsFor: 'testing' stamp: 'gsa 1/2/2013 13:20'!
 isStopped
 	"Is the server still running?"
 
 	^listenerProcess == nil or:[listenerProcess isTerminated]! !
 
-!WebServer methodsFor: 'listening' stamp: 'ar 2/20/2010 10:27'!
+!WebServer methodsFor: 'listening' stamp: 'gsa 1/2/2013 13:20'!
 listenOn: aPort
 	"Starts the server listening on the given port"
 
 	^self listenOn: aPort interface: nil! !
 
-!WebServer methodsFor: 'listening' stamp: 'ar 2/20/2010 10:28'!
+!WebServer methodsFor: 'listening' stamp: 'gsa 1/2/2013 13:20'!
 listenOn: aPort interface: anInterface
 	"Starts the server listening on the given port / network interface"
 
 	^self listenOn: aPort interface: anInterface backlogSize: 8! !
 
-!WebServer methodsFor: 'listening' stamp: 'SvenVanCaekenberghe 6/14/2010 15:48'!
+!WebServer methodsFor: 'listening' stamp: 'gsa 1/2/2013 13:20'!
 listenOn: aPort interface: anInterface backlogSize: backlog
 	"Starts the server listening on the given port / network interface"
 	
@@ -3800,50 +3810,50 @@ listenOn: aPort interface: anInterface backlogSize: backlog
 	].
 	self startListener.! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 2/22/2010 03:01'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:17'!
 listenerInterface
 	"Returns the listener interface for the server"
 
 	^interface! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 2/22/2010 03:01'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:17'!
 listenerPort
 	"Returns the listener port for the server"
 
 	^port! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 2/22/2010 03:00'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:17'!
 listenerProcess
 	"Returns the socket listener process for the server."
 
 	^listenerProcess! !
 
-!WebServer methodsFor: 'listening' stamp: 'ar 2/20/2010 10:28'!
+!WebServer methodsFor: 'listening' stamp: 'gsa 1/2/2013 13:20'!
 listenerProcessPriority
 	"The priority at which the listener process should run"
 
 	^Processor lowIOPriority! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 2/22/2010 03:00'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:17'!
 listenerSocket
 	"Returns the listener socket for the server."
 
 	^listenerSocket! !
 
-!WebServer methodsFor: 'initialize' stamp: 'ar 2/22/2010 05:35'!
+!WebServer methodsFor: 'initialize' stamp: 'gsa 1/2/2013 13:16'!
 log: aString
 	"Log the given information."
 
 	logAction ifNotNil:[logAction valueWithArguments: {aString}].
 ! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 2/22/2010 05:35'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:17'!
 logAction
 	"The current log action (a block or message)"
 
 	^logAction! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 2/22/2010 05:36'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:18'!
 logAction: aBlockOrMessage
 	"The current log action (a block or message).
 	Example:
@@ -3853,7 +3863,7 @@ logAction: aBlockOrMessage
 
 	logAction := aBlockOrMessage! !
 
-!WebServer methodsFor: 'logging' stamp: 'ar 7/28/2010 20:02'!
+!WebServer methodsFor: 'logging' stamp: 'gsa 1/2/2013 13:09'!
 logRequest: request response: response
 	"Log a request after it has been successfully processed"
 
@@ -3867,7 +3877,7 @@ logRequest: request response: response
 		on: Error do:[:ex| self log: 'Error in logging: ', ex description].
 ! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 2/23/2010 09:18'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:15'!
 newNonce
 	"Create a new nonce to be used for a client authentication session"
 
@@ -3878,7 +3888,7 @@ newNonce
 	].
 	^nonce! !
 
-!WebServer methodsFor: 'handling' stamp: 'ar 7/28/2010 20:27'!
+!WebServer methodsFor: 'handling' stamp: 'gsa 1/2/2013 13:14'!
 newRequest
 	"Answer a new request.
 	Subclasses should override this method to use a different request class."
@@ -3887,7 +3897,7 @@ newRequest
 		server: self;
 		yourself! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 2/23/2010 09:20'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:15'!
 nonceDeadline
 	"Answer the number of seconds a nonce is considered valid for digest auth
 	by the server. After this period, the client will have to reauthenticate.
@@ -3895,7 +3905,7 @@ nonceDeadline
 
 	^30*60 ! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 2/20/2010 12:54'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:15'!
 passwordAt: username realm: realm put: password
 	"Store the password hash for the key."
 
@@ -3903,19 +3913,19 @@ passwordAt: username realm: realm put: password
 	hash := self hashUser: username password: password realm: realm.
 	self passwordHashAt: (username,':',realm) put: hash! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 2/20/2010 12:51'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:15'!
 passwordHashAt: key
 	"Answer the password hash for the given key"
 
 	^vault at: key ifAbsent:['']! !
 
-!WebServer methodsFor: 'authentication' stamp: 'ar 2/20/2010 12:01'!
+!WebServer methodsFor: 'authentication' stamp: 'gsa 1/2/2013 13:15'!
 passwordHashAt: key put: hash
 	"Store the password hash for the key."
 
 	^vault at: key put: hash! !
 
-!WebServer methodsFor: 'services' stamp: 'ar 2/22/2010 02:52'!
+!WebServer methodsFor: 'services' stamp: 'gsa 1/2/2013 13:13'!
 removeService: entryPoint 
 	"Remove a service from the HTTP service provider.  See #addService:action:"
 
@@ -3923,7 +3933,7 @@ removeService: entryPoint
 		entryPoints removeKey: entryPoint asLowercase ifAbsent: [].
 	].! !
 
-!WebServer methodsFor: 'listening' stamp: 'ar 5/4/2010 09:22'!
+!WebServer methodsFor: 'listening' stamp: 'gsa 1/2/2013 13:20'!
 runListener
 	"Runs the server's listener loop. 
 	Accepts incoming connections and handles them asynchronously"
@@ -3950,44 +3960,44 @@ runListener
 	]] on: Error do:[:ex| self log: ex].
 ! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 6/14/2010 20:53'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:18'!
 serverDate
 	"Returns the date string to be used in responses"
 
 	^self class serverDate! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 6/14/2010 20:54'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:18'!
 serverString
 	"Returns the server string to be used in responses.
 	The response is cached for efficiency."
 
 	^serverString ifNil:[serverString := self class serverString].! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 6/14/2010 20:57'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:18'!
 serverString: aString
 	"Set the server string to be used in responses"
 
 	^serverString := aString! !
 
-!WebServer methodsFor: 'sessions' stamp: 'ar 2/23/2010 12:09'!
+!WebServer methodsFor: 'sessions' stamp: 'gsa 1/2/2013 13:21'!
 sessionAt: key
 	"Answer the session associated with the given key"
 
 	^mutex critical:[sessions at: key ifAbsent:[nil]].! !
 
-!WebServer methodsFor: 'sessions' stamp: 'ar 2/23/2010 12:10'!
+!WebServer methodsFor: 'sessions' stamp: 'gsa 1/2/2013 13:21'!
 sessionAt: key ifAbsentPut: session
 	"Answer the session associated with the given key"
 
 	^mutex critical:[sessions at: key ifAbsentPut:[session]].! !
 
-!WebServer methodsFor: 'sessions' stamp: 'ar 5/11/2010 23:34'!
+!WebServer methodsFor: 'sessions' stamp: 'gsa 1/2/2013 13:21'!
 sessionAt: key put: session
 	"Store the session associated with the given key"
 
 	^mutex critical:[sessions at: key put: session].! !
 
-!WebServer methodsFor: 'sessions' stamp: 'ar 2/23/2010 12:11'!
+!WebServer methodsFor: 'sessions' stamp: 'gsa 1/2/2013 13:21'!
 sessions
 	"The sessions associated with the WebServer. These are not used by the server
 	directly but rather provided so that client code has a convenient place to store
@@ -3995,7 +4005,7 @@ sessions
 	
 	^sessions! !
 
-!WebServer methodsFor: 'sessions' stamp: 'ar 2/23/2010 12:11'!
+!WebServer methodsFor: 'sessions' stamp: 'gsa 1/2/2013 13:21'!
 sessions: aDictionary
 	"The sessions associated with the WebServer. These are not used by the server
 	directly but rather provided so that client code has a convenient place to store
@@ -4003,19 +4013,19 @@ sessions: aDictionary
 	
 	sessions := aDictionary! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 11/1/2010 21:01'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:18'!
 siteUrl
 	"The site URL for WebServer, i.e., http://www.mysite.com or http://www.mysite.com/server (when used in a proxied environment) or https://www.mysite.com (when using SSL). Used to allow a client to derive the 'correct' full URL for a running server instance."
 
 	^siteUrl! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 11/1/2010 21:13'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:08'!
 siteUrl: aString
 	"The site URL for WebServer, i.e., http://www.mysite.com or http://www.mysite.com/server (when used in a proxied environment) or https://www.mysite.com (when using SSL). Used to allow a client to derive the 'correct' full URL for a running server instance."
 
 	siteUrl := aString! !
 
-!WebServer methodsFor: 'listening' stamp: 'ar 2/20/2010 10:29'!
+!WebServer methodsFor: 'listening' stamp: 'gsa 1/2/2013 13:20'!
 startListener
 	"Starts the server's listener process"
 
@@ -4026,14 +4036,14 @@ startListener
 	listenerProcess resume.
 ! !
 
-!WebServer methodsFor: 'listening' stamp: 'ar 2/20/2010 10:29'!
+!WebServer methodsFor: 'listening' stamp: 'gsa 1/2/2013 13:20'!
 stopListener
 	"Stops the server's listener process"
 
 	listenerProcess ifNotNil:[listenerProcess terminate].
 	listenerProcess := nil.! !
 
-!WebServer methodsFor: 'errors' stamp: 'ar 11/17/2011 10:16'!
+!WebServer methodsFor: 'errors' stamp: 'gsa 1/2/2013 13:29'!
 systemInfoOn: strm
 	"Provides system information for a server error report"
 
@@ -4046,29 +4056,30 @@ systemInfoOn: strm
 	strm nextPutAll: 'Image: ';
 		nextPutAll:  SystemVersion current version asString;
 		nextPutAll: ' [';
-		nextPutAll: SmalltalkImage current lastUpdateString asString;
+		nextPutAll: Smalltalk lastUpdateString asString;
 		nextPutAll: ']';
 		cr.
 
 	strm cr.
-
-	SecurityManager default printStateOn: strm.
+	
+	"TO-DO GSA 2/1/2013 Check how to do with Security Manager in Cuis"
+	"SecurityManager default printStateOn: strm."
 
 	"Additional info available from the windows VM"
 	WebUtils platformName = 'Win32' ifTrue:[
 		10001 to: 10003 do:[:i| | info |
-			info := (SmalltalkImage current getSystemAttribute: i) ifNil:[''].
+			info := (Smalltalk getSystemAttribute: i) ifNil:[''].
 			info := info copyReplaceAll: String lf with: String cr.
 			info isEmpty ifFalse:[strm cr; nextPutAll: info]]].
 ! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 2/20/2010 12:03'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:18'!
 vault
 	"The vault used for storing password hashes."
 
 	^vault! !
 
-!WebServer methodsFor: 'accessing' stamp: 'ar 2/22/2010 02:51'!
+!WebServer methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:18'!
 vault: anObject
 	"The vault used for storing password hashes.
 
@@ -4077,7 +4088,7 @@ vault: anObject
 
 	vault := anObject! !
 
-!WebServer class methodsFor: 'benchmarks' stamp: 'ar 5/4/2010 20:01'!
+!WebServer class methodsFor: 'benchmarks' stamp: 'gsa 1/2/2013 13:39'!
 benchmark
 	"Runs a WebClient/WebServer streaming benchmark to measure throughput"
 
@@ -4139,7 +4150,7 @@ browseDir: directory request: request
 
 ! !
 
-!WebServer class methodsFor: 'examples' stamp: 'ar 2/25/2010 16:33'!
+!WebServer class methodsFor: 'examples' stamp: 'gsa 1/2/2013 13:22'!
 browseFile: file request: request
 	"Responds with a file back to the original request"
 
@@ -4151,7 +4162,7 @@ browseFile: file request: request
 	resp headerAt: 'Content-Type' put: mimeTypes first.
 	request sendResponse: resp contentStream: file size: fileSize.! !
 
-!WebServer class methodsFor: 'examples' stamp: 'ar 8/26/2010 07:49'!
+!WebServer class methodsFor: 'examples' stamp: 'gsa 1/2/2013 13:22'!
 browseRequest: request
 	"Handle an HTTP request for browsing some resource"
 
@@ -4185,13 +4196,13 @@ browseRequest: request
 	].
 ! !
 
-!WebServer class methodsFor: 'accessing' stamp: 'ar 2/23/2010 09:29'!
+!WebServer class methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:40'!
 default
 	"A default WebServer instance. Mostly for the examples."
 
 	^Default ifNil:[Default := self new].! !
 
-!WebServer class methodsFor: 'examples' stamp: 'ar 2/23/2010 09:30'!
+!WebServer class methodsFor: 'examples' stamp: 'gsa 1/2/2013 13:22'!
 exampleAuth		"WebServer exampleAuth"
 	"Simple example requiring basic auth"
 
@@ -4214,7 +4225,7 @@ exampleAuth		"WebServer exampleAuth"
 			do:[self browseRequest: req]].
 ! !
 
-!WebServer class methodsFor: 'examples' stamp: 'ar 2/20/2010 14:54'!
+!WebServer class methodsFor: 'examples' stamp: 'gsa 1/2/2013 13:21'!
 exampleBrowse	"WebServer exampleBrowse"
 	"This example implements a simple http server allowing to view 
 	and download files (like browsing ftp sites etc)."
@@ -4226,7 +4237,7 @@ exampleBrowse	"WebServer exampleBrowse"
 	server addService: '/' action:[:req| self browseRequest: req].
 ! !
 
-!WebServer class methodsFor: 'examples' stamp: 'ar 2/22/2010 05:41'!
+!WebServer class methodsFor: 'examples' stamp: 'gsa 1/2/2013 13:22'!
 exampleDoIt		"WebServer exampleDoIt"
 	"This example executes doIts from a POST request.
 	It's the simplest possible RPC interface to Squeak."
@@ -4247,7 +4258,7 @@ exampleDoIt		"WebServer exampleDoIt"
 	].
 ! !
 
-!WebServer class methodsFor: 'examples' stamp: 'ar 7/29/2010 18:49'!
+!WebServer class methodsFor: 'examples' stamp: 'gsa 1/2/2013 13:23'!
 exampleSSL: certName
 
 	"This example implements a simple https server allowing to view 
@@ -4267,7 +4278,7 @@ exampleSSL: certName
 	server addService: '/' action:[:req| self browseRequest: req].
 ! !
 
-!WebServer class methodsFor: 'examples' stamp: 'ar 2/25/2010 03:28'!
+!WebServer class methodsFor: 'examples' stamp: 'gsa 1/2/2013 13:23'!
 exampleSession		"WebServer exampleSession"
 	"This example uses a simple session cookie to avoid 
 	authentication for every request."
@@ -4297,20 +4308,20 @@ exampleSession		"WebServer exampleSession"
 			ifFalse:[req send302Response: '/login?url=', req url encodeForHTTP]].
 ! !
 
-!WebServer class methodsFor: 'registry' stamp: 'ar 11/1/2010 20:59'!
+!WebServer class methodsFor: 'registry' stamp: 'gsa 1/2/2013 13:23'!
 forUrl: urlString
 	"Answer the WebServer registered for a given URL string."
 
 	^self forUrl: urlString ifAbsent:[self newForUrl: urlString]! !
 
-!WebServer class methodsFor: 'registry' stamp: 'ar 11/1/2010 20:59'!
+!WebServer class methodsFor: 'registry' stamp: 'gsa 1/2/2013 13:23'!
 forUrl: urlString ifAbsent: aBlock
 	"Answer the WebServer registered for a given URL string.
 	If no WebServer is registered, evaluate aBlock."
 
 	^self registry at: urlString ifAbsent: aBlock! !
 
-!WebServer class methodsFor: 'registry' stamp: 'ar 11/1/2010 21:02'!
+!WebServer class methodsFor: 'registry' stamp: 'gsa 1/2/2013 13:23'!
 newForUrl: urlString
 	"Create a new WebServer instance registered for a given URL string."
 
@@ -4326,26 +4337,26 @@ newForUrl: urlString
 	^server
 ! !
 
-!WebServer class methodsFor: 'registry' stamp: 'ar 11/1/2010 21:11'!
+!WebServer class methodsFor: 'registry' stamp: 'gsa 1/2/2013 13:23'!
 registry
 	"Answer the WebServer site registry"
 
 	^Registry ifNil:[Registry := Dictionary new]! !
 
-!WebServer class methodsFor: 'registry' stamp: 'ar 11/1/2010 20:59'!
+!WebServer class methodsFor: 'registry' stamp: 'gsa 1/2/2013 13:23'!
 removeUrl: urlString
 	"Remove and answer the WebServer registered for a given URL string.
 	If no WebServer was registered, return nil."
 
 	^self removeUrl: urlString ifAbsent:[nil]! !
 
-!WebServer class methodsFor: 'registry' stamp: 'ar 11/1/2010 20:59'!
+!WebServer class methodsFor: 'registry' stamp: 'gsa 1/2/2013 13:24'!
 removeUrl: urlString ifAbsent: aBlock
 	"Remove and answer the WebServer registered for a given URL string."
 
 	^self registry removeKey: urlString ifAbsent: aBlock! !
 
-!WebServer class methodsFor: 'benchmarks' stamp: 'ar 5/4/2010 21:27'!
+!WebServer class methodsFor: 'benchmarks' stamp: 'gsa 1/2/2013 13:41'!
 requestBenchmark: persistent
 	"Runs a WebClient/WebServer benchmark to measure request handling speed.
 	Uses a persistent connection if requested."
@@ -4367,7 +4378,7 @@ requestBenchmark: persistent
 		persistent: persistent] ensure:[WebServer reset].
 ! !
 
-!WebServer class methodsFor: 'accessing' stamp: 'ar 2/23/2010 09:29'!
+!WebServer class methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:41'!
 reset		"WebServer reset"
 	"Reset the default WebServer instance."
 
@@ -4389,7 +4400,7 @@ serverDate
 		s nextPutAll: ' GMT'.
 	].! !
 
-!WebServer class methodsFor: 'accessing' stamp: 'ar 2/12/2012 21:03'!
+!WebServer class methodsFor: 'accessing' stamp: 'gsa 1/2/2013 13:43'!
 serverString
 	"Returns the server string to be used in responses"
 
