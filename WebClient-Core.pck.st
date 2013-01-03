@@ -1,4 +1,4 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 2 January 2013 at 8:36:52 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1528] on 2 January 2013 at 9:08:32 pm'!
 'Description Please enter a description for this package '!
 !classDefinition: #WebAuthRequired category: #'WebClient-Core'!
 Exception subclass: #WebAuthRequired
@@ -183,14 +183,26 @@ A wrapper object for the WebSocket API.!
 !WebSocket07 commentStamp: '<historical>' prior: 0!
 A wrapper object for the WebSocket API.!
 
-!WebUtils commentStamp: 'gsa 1/2/2013 18:47' prior: 0!
+!WebUtils commentStamp: 'gsa 1/2/2013 21:00' prior: 0!
 WebUtils contains a number of utility methods used by WebClient/WebServer.
 
 1/1/2013 GSA handleAuth:
 
 Replaced UIManager current for FillInTheBlankMorph.
 
-As don't exist #requestPassword we should add it!!!
+As don't exist #requestPassword we should add it!!
+
+
+		"TO-DO GSA 2/1/2013 Quick fix for Cuis that do not support Unicode"
+		"[$u]		->	[Unicode value: 
+						(Integer readFrom: (stream next: 4) readStream base: 16)]."
+		[$u] 	-> 	[$u].	
+		
+		
+		
+	"TO-DO GSA 2/1/2013 Quick fix for Cuis that do not support MultiByteFileStream"
+	"stream wantsLineEndConversion: true; setToEnd."
+	stream setToEnd.!
 
 !WebAuthRequired methodsFor: 'accessing' stamp: 'ar 2/10/2012 13:14'!
 client
@@ -5256,14 +5268,16 @@ jsonChar: aCharacter on: stream
 		'\u', (((ascii bitAnd: 16rFFFF) printStringBase: 16) padded: #left to: 4 with: $0).
 ! !
 
-!WebUtils class methodsFor: 'json-decode' stamp: 'ar 2/10/2012 13:46'!
+!WebUtils class methodsFor: 'json-decode' stamp: 'gsa 1/2/2013 20:57'!
 jsonCharFrom: stream
 	"Decodes a backslash-escaped character"
 
 	| ch |
 	^(ch := stream next) caseOf: {
-		[$u]		->	[Unicode value: 
-						(Integer readFrom: (stream next: 4) readStream base: 16)].
+		"TO-DO GSA 2/1/2013 Quick fix for Cuis that do not support Unicode"
+		"[$u]		->	[Unicode value: 
+						(Integer readFrom: (stream next: 4) readStream base: 16)]."
+		[$u] 	-> 	[$u].			
 		[$r] 	-> 	[Character cr].
 		[$n] 	-> 	[Character lf].
 		[$t] 	-> 	[Character tab].
@@ -5506,7 +5520,7 @@ logEntryFor: request response: response
 	^entry
 ! !
 
-!WebUtils class methodsFor: 'misc' stamp: 'ar 7/28/2010 20:01'!
+!WebUtils class methodsFor: 'misc' stamp: 'gsa 1/2/2013 21:00'!
 logRequest: request response: response on: streamOrFilename
 	"Log a request in common log format on the given stream / file."
 
@@ -5520,7 +5534,9 @@ logRequest: request response: response on: streamOrFilename
 		stream := [FileStream oldFileNamed: streamOrFilename] 
 			on: FileDoesNotExistException
 			do:[FileStream newFileNamed: streamOrFilename].
-		stream wantsLineEndConversion: true; setToEnd.
+		"TO-DO GSA 2/1/2013 Quick fix for Cuis that do not support MultiByteFileStream"
+		"stream wantsLineEndConversion: true; setToEnd."
+		stream setToEnd.
 	] ifFalse:[stream := streamOrFilename].
 
 	stream nextPutAll: entry; cr.
