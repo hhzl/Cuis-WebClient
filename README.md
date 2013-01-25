@@ -67,29 +67,26 @@ and the repo of WebClient (Mine: https://github.com/garduino/Cuis-WebClient or f
 
 Then a script as the following will do the magic:
 
-    | slash repo |
-    slash _ FileDirectory slash.
-    repo := 'C:\Users\MyUser\Documents\GitHub'. --> *** Replace with your real directory ***
+    | slash  |
+    slash := FileDirectory slash.
     {
-	repo, slash, 'Cuis-Cryptography', slash, 'Cuis-System-Hashing.pck.st' .
-    repo, slash, 'Cuis-CompatibilityWithOtherSmalltalks', slash, 'Cuis-CompatibilityWithOtherSmalltalks.pck.st' .
-	repo, slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-MIME.pck.st' .
-    repo, slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-UUID.pck.st' .
-    repo, slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-NetworkTests-UUID.pck.st' .
-    repo, slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-Protocols.pck.st' .
-    repo, slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-Url.pck.st' .
-    repo, slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-RFC822.pck.st' .
-    repo, slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Settings-Network.pck.st' .
-    repo, slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-NetworkTests-Protocols.pck.st' .
-    repo, slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-NetworkTests-RFC822.pck.st' .
-    repo, slash, 'Cuis-WebClient', slash, 'WebClient-Core.pck.st' .
-    repo, slash, 'Cuis-WebClient', slash, 'WebClient-Tests.pck.st' .
+    '..', slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-MIME.pck.st' .
+    '..', slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-UUID.pck.st' .
+    '..', slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-NetworkTests-UUID.pck.st' .
+    '..', slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-Protocols.pck.st' .
+    '..', slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-Url.pck.st' .
+    '..', slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Network-RFC822.pck.st' .
+    '..', slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-Settings-Network.pck.st' .
+    '..', slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-NetworkTests-Protocols.pck.st' .
+    '..', slash, 'Cuis-Pharo14CompatibilityLayer', slash, 'Cuis-NetworkTests-RFC822.pck.st' .
+    '..', slash, 'Cuis-WebClient', slash, 'WebClient-Core.pck.st' .
+    '..', slash, 'Cuis-WebClient', slash, 'WebClient-Tests.pck.st' .
     }
     do:
-    [ :fileName | CodeFileBrowser installPackage:
+    [ :fileName | CodePackageFile installPackageStream:
     (FileStream concreteStream readOnlyFileNamed: fileName)
     ].
 
-CAUTION: Most of these packages are work in progress by Germ·n Arduino
+CAUTION: Most of these packages are work in progress by Germ√°n Arduino
 (https://github.com/garduino/Cuis-Pharo14CompatibilityLayer). He is adapting them as the need for
 more features arises.
