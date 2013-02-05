@@ -65,9 +65,10 @@ https://github.com/garduino/Cuis-Pharo14CompatibilityLayer
 
 and the repo of WebClient (Mine: https://github.com/garduino/Cuis-WebClient or from David Graham when get integrated: https://github.com/davidgraham/Cuis-WebClient).
 
-Then a script as the following will do the magic:
+You need to have the repositories 'Cuis-CompatibilityWithOtherSmalltalks' and 'Cuis-Pharo14CompatibilityLayer' available as sibling directories of 'Cuis-WebClient'. Then to install execute:
 
     | slash  |
+
     slash := FileDirectory slash.
     {
     '..', slash, 'Cuis-CompatibilityWithOtherSmalltalks', slash, 'Cuis-CompatibilityWithOtherSmalltalks.pck.st' .
@@ -85,9 +86,41 @@ Then a script as the following will do the magic:
     }
     do:
     [ :fileName | CodePackageFile installPackageStream:
-    (FileStream concreteStream readOnlyFileNamed: fileName)
-    ].
+                   (FileStream concreteStream readOnlyFileNamed: fileName)    ].
 
 CAUTION: Most of these packages are work in progress by Germán Arduino
 (https://github.com/garduino/Cuis-Pharo14CompatibilityLayer). He is adapting them as the need for
 more features arises.
+
+###Porting Notes
+
+Installation protocol on the Transcript
+
+
+    WebRequest>>send200Response: (UTF8TextConverter is Undeclared) 
+    WebRequest>>send404Response: (UTF8TextConverter is Undeclared) 
+    WebUtils class>>sha1Hash: (SecureHashAlgorithm is Undeclared) 
+    WebUtils class>>webSocketHash07: (SecureHashAlgorithm is Undeclared) 
+    Package WebClient-Core successfully installed
+    Undeclared: a Dictionary(#ExternalSettings->nil #GIFReadWriter->nil #JPEGReadWriter->nil #Latin1TextConverter->nil #MailMessage->nil     #MailSender->nil #Project->nil #SecureHashAlgorithm->nil #ServerDirectory->nil #SqNumberParser->nil #StringHolder->nil #UTF8TextConverter->nil )
+
+
+    Package WebClient-Tests successfully installed
+    Undeclared: a Dictionary(#ExternalSettings->nil #GIFReadWriter->nil #JPEGReadWriter->nil #Latin1TextConverter->nil #MailMessage->nil #MailSender->nil #Project->nil #SecureHashAlgorithm->nil #ServerDirectory->nil #SqNumberParser->nil #StringHolder->nil #UTF8TextConverter->nil )
+
+
+#### Unicode
+
+Problems with Unicode
+    http://jvuletich.org/pipermail/cuis_jvuletich.org/2013-February/000772.html 
+
+    WebRequest >>send200Response:
+    WebRequest >>send400Response
+    WebRequest >>send404Response:
+    WebRequest >>send500Response:
+    WebSocket00>>send:type:
+    WebSocket07>>firstFragment:
+    Websocket07>>lastFragment:
+    Websocket07>>nextFragment:
+    WebSocket07>>send:
+    WebClientServerTests>>testStrings
