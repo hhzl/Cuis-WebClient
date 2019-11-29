@@ -86,7 +86,8 @@ You need to have the repositories 'Cuis-CompatibilityWithOtherSmalltalks' and 'C
     }
     do:
     [ :fileName | CodePackageFile installPackageStream:
-                   (FileStream concreteStream readOnlyFileNamed: fileName)    ].
+                   (FileStream concreteStream readOnlyFileNamed: fileName)
+    ].
 
 CAUTION: Most of these packages are work in progress by Germán Arduino
 (https://github.com/garduino/Cuis-Pharo14CompatibilityLayer). He is adapting them as the need for
@@ -124,3 +125,8 @@ Problems with Unicode
     Websocket07>>nextFragment:
     WebSocket07>>send:
     WebClientServerTests>>testStrings
+
+
+Archived
+---------------
+This repository is archived because WebClient is now part of the packages in the main Cuis repository. 
